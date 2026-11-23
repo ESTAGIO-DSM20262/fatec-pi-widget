@@ -1,32 +1,16 @@
-<!-- ================================================================
-   PI INDICADOS — Widget para WordPress (Custom HTML Block)
-   Design: Fatec Itaquera (Tema CPS v2.0.08)
-   Fonte de dados: https://projetos.alvarosena.com.br/
-   
-   COMO USAR: Cole este bloco inteiro em um bloco "HTML Personalizado"
-   no editor WordPress (Gutenberg). Não precisa de plugin.
-   
-   ⚠️  ATENÇÃO: Os dados de ciclo, semestre DSM e tecnologias abaixo
-   são aproximados com base na análise visual do site. Verifique e
-   corrija antes de publicar.
-================================================================ -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Slab:wght@400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ── Seção principal ─────────────────────────────────────────── */
 .pi-secao {
   font-family: 'Roboto', Arial, sans-serif;
   font-weight: 300;
   font-size: 16px;
-  color: #333333;
+  color: #333;
   margin: 50px 0;
   line-height: 1.6;
 }
-
-/* ── Cabeçalho da seção (estilo .cabecalho-secao da Fatec) ───── */
 .pi-cabecalho-topo {
   display: flex;
   justify-content: space-between;
@@ -35,7 +19,6 @@
   gap: 8px;
   padding-bottom: 10px;
 }
-
 .pi-cabecalho-topo h2 {
   font-family: 'Roboto Slab', Georgia, serif;
   font-size: 30px;
@@ -44,7 +27,6 @@
   margin: 0;
   line-height: 1.1;
 }
-
 .pi-ver-todos {
   font-family: 'Roboto', Arial, sans-serif;
   font-size: 16px;
@@ -55,8 +37,6 @@
   transition: color 0.2s;
 }
 .pi-ver-todos:hover { color: #7e0000; text-decoration: underline; }
-
-/* Divisor SVG (replica divisor.svg da Fatec) */
 .pi-divisor {
   display: block;
   height: 15px;
@@ -66,38 +46,28 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-
-/* ── Grid de cards ───────────────────────────────────────────── */
 .pi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 22px;
 }
-
-@media (max-width: 1024px) {
-  .pi-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 540px) {
+@media (max-width: 1024px) { .pi-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 540px)  {
   .pi-grid { grid-template-columns: 1fr; }
   .pi-cabecalho-topo h2 { font-size: 22px; }
 }
-
-/* ── Card ────────────────────────────────────────────────────── */
 .pi-card {
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e4e4e4;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
-
 .pi-card:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 24px rgba(0,0,0,.12);
   transform: translateY(-3px);
 }
-
-/* Banner colorido do topo do card */
 .pi-card-topo {
   position: relative;
   height: 150px;
@@ -109,25 +79,22 @@
   overflow: hidden;
   transition: filter 0.35s;
 }
-.pi-card:hover .pi-card-topo {
-  filter: contrast(1.05) saturate(1.15);
-}
-
-.pi-card-icone {
-  font-size: 38px;
+.pi-card:hover .pi-card-topo { filter: contrast(1.05) saturate(1.15); }
+.pi-card-abbrev {
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: rgba(0,0,0,.22);
   line-height: 1;
   margin-bottom: 6px;
+  letter-spacing: 0.06em;
 }
-
 .pi-card-categoria-label {
   font-size: 11px;
   font-weight: 400;
-  color: rgba(0, 0, 0, 0.55);
+  color: rgba(0,0,0,.5);
   text-align: center;
-  letter-spacing: 0.02em;
 }
-
-/* Badges sobrepostos no banner */
 .pi-badge {
   position: absolute;
   font-size: 10px;
@@ -136,311 +103,115 @@
   border-radius: 20px;
   line-height: 1.4;
 }
-
-.pi-badge-indicado {
-  top: 8px;
-  left: 8px;
-  background: #b20000;
-  color: #ffffff;
-}
-
-.pi-badge-status {
-  top: 8px;
-  right: 8px;
-}
-.pi-status-andamento {
-  background: rgba(0, 193, 207, 0.18);
-  color: #004854;
-}
-.pi-status-concluido {
-  background: rgba(0, 92, 109, 0.14);
-  color: #004854;
-}
-
-.pi-badge-semestre {
-  bottom: 8px;
-  left: 8px;
-  background: rgba(255, 255, 255, 0.82);
-  color: #333;
-  font-weight: 400;
-}
-
-/* ── Corpo do card ───────────────────────────────────────────── */
-.pi-card-corpo {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
+.pi-badge-indicado  { top: 8px; left: 8px; background: #b20000; color: #fff; }
+.pi-badge-status    { top: 8px; right: 8px; }
+.pi-status-andamento { background: rgba(0,193,207,.18); color: #004854; }
+.pi-status-concluido { background: rgba(0,92,109,.14);  color: #004854; }
+.pi-badge-semestre  { bottom: 8px; left: 8px; background: rgba(255,255,255,.82); color: #333; font-weight: 400; }
+.pi-card-corpo { padding: 16px; display: flex; flex-direction: column; flex: 1; }
 .pi-card-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  color: #888888;
-  margin-bottom: 8px;
-  gap: 4px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 11px; color: #888; margin-bottom: 8px; gap: 4px;
 }
-
 .pi-card-ciclo { font-weight: 400; white-space: nowrap; }
-
 .pi-card-orientador {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 60%;
-  text-align: right;
-  font-weight: 300;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+  max-width: 60%; text-align: right; font-weight: 300;
 }
-
 .pi-card-titulo {
   font-family: 'Roboto', Arial, sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  color: #005c6d;
-  margin: 0 0 8px 0;
-  line-height: 1.4;
-  transition: color 0.2s;
+  font-size: 15px; font-weight: 500; color: #005c6d;
+  margin: 0 0 8px 0; line-height: 1.4; transition: color 0.2s;
 }
 .pi-card:hover .pi-card-titulo { color: #005c6e; }
-
 .pi-card-desc {
-  font-size: 13px;
-  font-weight: 300;
-  color: #666666;
-  line-height: 1.65;
+  font-size: 13px; font-weight: 300; color: #666; line-height: 1.65;
   margin: 0 0 12px 0;
-  /* Limitar a 2 linhas */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
 }
-
-/* Tags de tecnologias */
 .pi-tags {
-  list-style: none;
-  margin: 0 0 14px 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  list-style: none; margin: 0 0 14px 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 4px;
 }
 .pi-tag {
-  font-size: 10px;
-  font-weight: 400;
-  color: #005c6d;
-  background: rgba(0, 92, 109, 0.08);
-  border: 1px solid rgba(0, 92, 109, 0.15);
-  padding: 2px 8px;
-  border-radius: 20px;
+  font-size: 10px; font-weight: 400; color: #005c6d;
+  background: rgba(0,92,109,.08);
+  border: 1px solid rgba(0,92,109,.15);
+  padding: 2px 8px; border-radius: 20px;
 }
-
-/* Rodapé do card com CTA */
-.pi-card-footer {
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px;
-  margin-top: auto;
-}
-
+.pi-card-footer { border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: auto; }
 .pi-link-ver {
-  font-size: 13px;
-  font-weight: 400;
-  color: #b20000;
-  text-decoration: none;
-  transition: color 0.2s;
+  font-size: 13px; font-weight: 400; color: #b20000;
+  text-decoration: none; transition: color 0.2s;
 }
 .pi-link-ver:hover { color: #005c6d; }
 </style>
 
 <section class="pi-secao">
   <div class="pi-cabecalho-topo">
-    <h2>Projetos Integradores Indicados</h2>
+    <h2>Projetos Integradores em Destaque</h2>
     <a href="https://projetos.alvarosena.com.br/" target="_blank" rel="noopener noreferrer" class="pi-ver-todos">+ ver todos</a>
   </div>
   <span class="pi-divisor"></span>
-
-  <div class="pi-grid" id="pi-projetos-grid">
-    <!-- Cards injetados pelo script abaixo -->
-  </div>
+  <div class="pi-grid" id="pi-projetos-grid"></div>
 </section>
 
 <script>
 (function () {
-  /* ============================================================
-     DADOS DOS PROJETOS — "PI Indicados"
-     Fonte: https://projetos.alvarosena.com.br/ (filtro PI Indicado)
-
-     ⚠️  CAMPOS A VERIFICAR ANTES DE PUBLICAR:
-       - ciclo      → verifique na página de cada projeto
-       - dsmSem     → semestre DSM (1–6)
-       - techs      → tecnologias listadas no projeto
-       - descricao  → ajuste para o texto real do site
-     
-     Para adicionar um projeto novo: copie um objeto da lista e
-     preencha os campos. Para remover: delete o objeto.
-     A ordenação por "mais recente" é feita automaticamente.
-  ============================================================ */
   var projetos = [
-    {
-      id: 4,
-      titulo: "ConectaFatec — Mentoria & Networking",
-      descricao: "Rede de mentoria e networking entre alunos e ex-alunos da Fatec, conectando veteranos a calouros para orientação de carreira.",
-      ciclo: "2026/2",         // ⚠️ verifique
-      dsmSem: "DSM 5º Semestre", // ⚠️ verifique
-      status: "Em andamento",
-      categoria: "Mentoria & Networking",
-      icone: "🤝",
-      cor: "#f3e8ff",           // lilás suave
-      techs: ["React", "Node.js", "PostgreSQL"],
-      orientador: "Prof. Marcos V.",
-      url: "https://projetos.alvarosena.com.br/projetos/4"
-    },
-    {
-      id: 1,
-      titulo: "SALA — Sistema de Agendamento de Laboratórios",
-      descricao: "Plataforma web para agendamento e gerenciamento de laboratórios acadêmicos com reservas em tempo real e controle de disponibilidade.",
-      ciclo: "2026/1",
-      dsmSem: "DSM 6º Semestre",
-      status: "Em andamento",
-      categoria: "Gestão de laboratórios",
-      icone: "🧪",
-      cor: "#dbeafe",           // azul suave
-      techs: ["React", "Node.js", "PostgreSQL"],
-      orientador: "Prof. Dr. Carlos Oliveira",
-      url: "https://projetos.alvarosena.com.br/projetos/1"
-    },
-    {
-      id: 8,
-      titulo: "SegurApp — Gestão de Acessos",
-      descricao: "Sistema integrado de gestão de acessos físicos e digitais com controle biométrico e monitoramento de permissões em tempo real.",
-      ciclo: "2026/1",
-      dsmSem: "DSM 4º Semestre",
-      status: "Em andamento",
-      categoria: "Segurança",
-      icone: "🔒",
-      cor: "#fee2e2",           // vermelho suave
-      techs: ["Java", "Spring Boot", "PostgreSQL"],
-      orientador: "Prof. Dr. Carlos Oliveira",
-      url: "https://projetos.alvarosena.com.br/projetos/8"
-    },
-    {
-      id: 3,
-      titulo: "SmartCampus — Telemetria de Ambientes",
-      descricao: "Solução IoT para monitoramento ambiental do campus, rastreando temperatura, umidade, luminosidade e ocupação em tempo real.",
-      ciclo: "2026/1",
-      dsmSem: "DSM 4º Semestre",
-      status: "Em andamento",
-      categoria: "Telemetria",
-      icone: "📡",
-      cor: "#ccfbf1",           // verde-água suave
-      techs: ["Python", "IoT", "MongoDB"],
-      orientador: "Prof. Marcos V.",
-      url: "https://projetos.alvarosena.com.br/projetos/3"
-    },
-    {
-      id: 6,
-      titulo: "EduTrack — Rendimento em Programação",
-      descricao: "Dashboard analítico de rendimento acadêmico em programação com métricas individuais e por turma para apoio pedagógico.",
-      ciclo: "2025/2",
-      dsmSem: "DSM 3º Semestre",
-      status: "Concluído",
-      categoria: "Análise de rendimento",
-      icone: "📊",
-      cor: "#ffedd5",           // laranja suave
-      techs: ["React", "Python", "PostgreSQL"],
-      orientador: "Profa. Ana L.",
-      url: "https://projetos.alvarosena.com.br/projetos/6"
-    },
-    {
-      id: 9,
-      titulo: "SaúdeConecta — Triagem Acessível",
-      descricao: "Triagem de saúde acessível para populações vulneráveis, com formulários adaptativos e suporte a múltiplos idiomas.",
-      ciclo: "2025/2",
-      dsmSem: "DSM 2º Semestre",
-      status: "Concluído",
-      categoria: "Saúde & acessibilidade",
-      icone: "🏥",
-      cor: "#dcfce7",           // verde suave
-      techs: ["Vue.js", "Flask", "MySQL"],
-      orientador: "Profa. Ana L.",
-      url: "https://projetos.alvarosena.com.br/projetos/9"
-    },
-    {
-      id: 12,
-      titulo: "Biblioteca Digital — Acervo de TCCs",
-      descricao: "Repositório digital de TCCs e trabalhos acadêmicos com busca semântica, categorização automática e curadoria por docentes.",
-      ciclo: "2025/2",
-      dsmSem: "DSM 6º Semestre",
-      status: "Concluído",
-      categoria: "Acervo digital",
-      icone: "📚",
-      cor: "#f1f5f9",           // cinza-azulado suave
-      techs: ["Next.js", "TypeScript", "PostgreSQL"],
-      orientador: "Profa. Ana L.",
-      url: "https://projetos.alvarosena.com.br/projetos/12"
-    },
-    {
-      id: 10,
-      titulo: "EcoMonitor — Consumo de Energia",
-      descricao: "Monitor inteligente de consumo energético predial com alertas automáticos, relatórios de sustentabilidade e metas de eficiência.",
-      ciclo: "2025/1",
-      dsmSem: "DSM 3º Semestre",
-      status: "Concluído",
-      categoria: "Eficiência energética",
-      icone: "⚡",
-      cor: "#fef9c3",           // amarelo suave
-      techs: ["Python", "IoT", "SQLite"],
-      orientador: "Prof. Marcos V.",
-      url: "https://projetos.alvarosena.com.br/projetos/10"
-    }
-  ];
+    { id:'4',  titulo:'ConectaFatec - Mentoria e Networking',           descricao:'Rede de mentoria e networking entre alunos e ex-alunos da Fatec.', ciclo:'2026/2', dsmSem:'DSM 5o Semestre', status:'Em andamento', categoria:'Mentoria e Networking', abbrev:'MNT', cor:'#f3e8ff', techs:['React','Node.js'],     orientador:'Prof. Marcos V.',           url:'https://projetos.alvarosena.com.br/projetos/4'  },
+    { id:'1',  titulo:'SALA - Sistema de Agendamento de Laboratorios',  descricao:'Plataforma de agendamento de laboratorios academicos em tempo real.',  ciclo:'2026/1', dsmSem:'DSM 6o Semestre', status:'Em andamento', categoria:'Gestao de laboratorios', abbrev:'LAB', cor:'#dbeafe', techs:['React','Node.js'],     orientador:'Prof. Dr. Carlos Oliveira', url:'https://projetos.alvarosena.com.br/projetos/1'  },
+    { id:'8',  titulo:'SegurApp - Gestao de Acessos',                   descricao:'Gestao de acessos fisicos e digitais com controle biometrico.',         ciclo:'2026/1', dsmSem:'DSM 4o Semestre', status:'Em andamento', categoria:'Seguranca',             abbrev:'SEG', cor:'#fee2e2', techs:['Java','Spring Boot'],  orientador:'Prof. Dr. Carlos Oliveira', url:'https://projetos.alvarosena.com.br/projetos/8'  },
+    { id:'3',  titulo:'SmartCampus - Telemetria de Ambientes',          descricao:'Monitoramento ambiental do campus via IoT em tempo real.',              ciclo:'2026/1', dsmSem:'DSM 4o Semestre', status:'Em andamento', categoria:'Telemetria',            abbrev:'TEL', cor:'#ccfbf1', techs:['Python','IoT'],       orientador:'Prof. Marcos V.',           url:'https://projetos.alvarosena.com.br/projetos/3'  },
+    { id:'6',  titulo:'EduTrack - Rendimento em Programacao',           descricao:'Dashboard de rendimento academico com metricas individuais e por turma.', ciclo:'2025/2', dsmSem:'DSM 3o Semestre', status:'Concluido',    categoria:'Analise de rendimento', abbrev:'RND', cor:'#ffedd5', techs:['React','Python'],     orientador:'Profa. Ana L.',             url:'https://projetos.alvarosena.com.br/projetos/6'  },
+    { id:'9',  titulo:'SaudeConecta - Triagem Acessivel',               descricao:'Triagem de saude acessivel com formularios adaptativos e multilingue.',   ciclo:'2025/2', dsmSem:'DSM 2o Semestre', status:'Concluido',    categoria:'Saude e acessibilidade', abbrev:'SAU', cor:'#dcfce7', techs:['Vue.js','Flask'],    orientador:'Profa. Ana L.',             url:'https://projetos.alvarosena.com.br/projetos/9'  },
+    { id:'12', titulo:'Biblioteca Digital - Acervo de TCCs',            descricao:'Repositorio de TCCs com busca semantica e curadoria docente.',           ciclo:'2025/2', dsmSem:'DSM 6o Semestre', status:'Concluido',    categoria:'Acervo digital',        abbrev:'ACV', cor:'#f1f5f9', techs:['Next.js','TypeScript'], orientador:'Profa. Ana L.',             url:'https://projetos.alvarosena.com.br/projetos/12' },
+    { id:'10', titulo:'EcoMonitor - Consumo de Energia',                descricao:'Monitor de consumo energetico predial com alertas e metas de sustentabilidade.', ciclo:'2025/1', dsmSem:'DSM 3o Semestre', status:'Concluido', categoria:'Eficiencia energetica', abbrev:'ECO', cor:'#fef9c3', techs:['Python','IoT'], orientador:'Prof. Marcos V.',           url:'https://projetos.alvarosena.com.br/projetos/10' },
+  ]
 
-  /* Ordenar por ciclo mais recente (YYYY/S → descendente) */
   projetos.sort(function (a, b) {
-    var ap = a.ciclo.split('/');
-    var bp = b.ciclo.split('/');
-    var av = parseInt(ap[0]) * 10 + parseInt(ap[1]);
-    var bv = parseInt(bp[0]) * 10 + parseInt(bp[1]);
-    return bv - av;
-  });
+    var ap = a.ciclo.split('/'), bp = b.ciclo.split('/')
+    return (parseInt(bp[0]) * 10 + parseInt(bp[1])) - (parseInt(ap[0]) * 10 + parseInt(ap[1]))
+  })
 
-  /* Renderizar cada card */
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+  }
+
   function renderCard(p) {
-    var stCls = p.status === 'Em andamento' ? 'pi-status-andamento' : 'pi-status-concluido';
-    var tags  = p.techs.map(function (t) {
-      return '<li class="pi-tag">' + t + '</li>';
-    }).join('');
-
+    var stCls = p.status === 'Em andamento' ? 'pi-status-andamento' : 'pi-status-concluido'
+    var tags  = p.techs.map(function (t) { return '<li class="pi-tag">' + esc(t) + '</li>' }).join('')
     return (
       '<article class="pi-card">' +
         '<div class="pi-card-topo" style="background:' + p.cor + '">' +
-          '<span class="pi-badge pi-badge-indicado">⭐ PI Indicado</span>' +
-          '<span class="pi-badge pi-badge-status ' + stCls + '">' + p.status + '</span>' +
-          '<div class="pi-card-icone">' + p.icone + '</div>' +
-          '<div class="pi-card-categoria-label">' + p.categoria + '</div>' +
-          '<span class="pi-badge pi-badge-semestre">' + p.dsmSem + '</span>' +
+          '<span class="pi-badge pi-badge-indicado">PI Indicado</span>' +
+          '<span class="pi-badge pi-badge-status ' + stCls + '">' + esc(p.status) + '</span>' +
+          '<div class="pi-card-abbrev">' + esc(p.abbrev) + '</div>' +
+          '<div class="pi-card-categoria-label">' + esc(p.categoria) + '</div>' +
+          '<span class="pi-badge pi-badge-semestre">' + esc(p.dsmSem) + '</span>' +
         '</div>' +
         '<div class="pi-card-corpo">' +
           '<div class="pi-card-meta">' +
-            '<span class="pi-card-ciclo">Ciclo ' + p.ciclo + '</span>' +
-            '<span class="pi-card-orientador" title="' + p.orientador + '">' + p.orientador + '</span>' +
+            '<span class="pi-card-ciclo">Ciclo ' + esc(p.ciclo) + '</span>' +
+            '<span class="pi-card-orientador" title="' + esc(p.orientador) + '">' + esc(p.orientador) + '</span>' +
           '</div>' +
-          '<h3 class="pi-card-titulo">' + p.titulo + '</h3>' +
-          '<p class="pi-card-desc">' + p.descricao + '</p>' +
+          '<h3 class="pi-card-titulo">' + esc(p.titulo) + '</h3>' +
+          '<p class="pi-card-desc">' + esc(p.descricao) + '</p>' +
           '<ul class="pi-tags">' + tags + '</ul>' +
           '<div class="pi-card-footer">' +
-            '<a href="' + p.url + '" target="_blank" rel="noopener noreferrer" class="pi-link-ver">Ver projeto →</a>' +
+            '<a href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer" class="pi-link-ver">Ver projeto</a>' +
           '</div>' +
         '</div>' +
       '</article>'
-    );
+    )
   }
 
-  var grid = document.getElementById('pi-projetos-grid');
-  if (grid) {
-    grid.innerHTML = projetos.map(renderCard).join('');
-  }
-}());
+  var grid = document.getElementById('pi-projetos-grid')
+  if (grid) grid.innerHTML = projetos.map(renderCard).join('')
+}())
 </script>
