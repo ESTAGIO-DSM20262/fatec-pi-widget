@@ -195,47 +195,36 @@
 <script>
 (function () {
 
-  // -----------------------------------------------------------------
-  // Configuracao — altere os valores abaixo para adaptar o widget.
-  //
-  // urlSistema : endereco base do sistema de projetos.
-  //              Usado no link "ver todos" e na mensagem de manutencao.
-  //
-  // urlApi     : endpoint que retorna os projetos em destaque.
-  //              Deve responder com um array JSON no formato esperado.
-  //              Consulte o README para detalhes do contrato da API.
-  // -----------------------------------------------------------------
   var CONFIG = {
-    urlSistema: 'https://projetos.alvarosena.com.br',
-    urlApi:     'https://projetos.alvarosena.com.br/api/projects/recommended',
+    urlSistema: 'SUA_URL_AQUI',
+    urlApi:     'SUA_URL_AQUI/api/projects/recommended',
   }
-  // -----------------------------------------------------------------
 
   var linkVerTodos = document.getElementById('pi-link-ver-todos')
   if (linkVerTodos) linkVerTodos.href = CONFIG.urlSistema
 
   var TEMA_MAP = {
     'gestao de laboratorios':  { abbrev: 'LAB', cor: '#dbeafe' },
-    'gestão de laboratórios':  { abbrev: 'LAB', cor: '#dbeafe' },
+    'gestao de laboratorios':  { abbrev: 'LAB', cor: '#dbeafe' },
     'mentoria':                { abbrev: 'MNT', cor: '#f3e8ff' },
     'networking':              { abbrev: 'MNT', cor: '#f3e8ff' },
     'seguranca':               { abbrev: 'SEG', cor: '#fee2e2' },
-    'segurança':               { abbrev: 'SEG', cor: '#fee2e2' },
+    'seguranca':               { abbrev: 'SEG', cor: '#fee2e2' },
     'telemetria':              { abbrev: 'TEL', cor: '#ccfbf1' },
     'rendimento':              { abbrev: 'RND', cor: '#ffedd5' },
     'saude':                   { abbrev: 'SAU', cor: '#dcfce7' },
-    'saúde':                   { abbrev: 'SAU', cor: '#dcfce7' },
+    'saude':                   { abbrev: 'SAU', cor: '#dcfce7' },
     'acervo':                  { abbrev: 'ACV', cor: '#f1f5f9' },
     'biblioteca':              { abbrev: 'ACV', cor: '#f1f5f9' },
     'energia':                 { abbrev: 'ECO', cor: '#fef9c3' },
     'sustentabilidade':        { abbrev: 'SUS', cor: '#d1fae5' },
     'automacao':               { abbrev: 'AUT', cor: '#fef3c7' },
-    'automação':               { abbrev: 'AUT', cor: '#fef3c7' },
+    'automacao':               { abbrev: 'AUT', cor: '#fef3c7' },
     'serverless':              { abbrev: 'SRV', cor: '#e0f2fe' },
     'logistica':               { abbrev: 'LOG', cor: '#fdf4ff' },
-    'logística':               { abbrev: 'LOG', cor: '#fdf4ff' },
+    'logistica':               { abbrev: 'LOG', cor: '#fdf4ff' },
     'gestao':                  { abbrev: 'GST', cor: '#f0fdf4' },
-    'gestão':                  { abbrev: 'GST', cor: '#f0fdf4' },
+    'gestao':                  { abbrev: 'GST', cor: '#f0fdf4' },
   }
 
   var DEFAULT_TEMA = { abbrev: 'PI', cor: '#f5f5f5' }
