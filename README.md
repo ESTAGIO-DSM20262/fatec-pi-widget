@@ -15,6 +15,53 @@ Os projetos sao sempre ordenados pelo mais recentemente premiado.
 | `pi-widget-wordpress-dynamic.html` | Versao recomendada. Busca os dados automaticamente via API. |
 | `pi-widget-wordpress-static.html` | Versao de fallback com dados fixos no codigo. |
 
+## Configuracao de URL
+
+Antes de usar o widget, substitua `SUA_URL_AQUI` pela URL base do sistema de projetos implantado.
+
+### Versao dinamica (`pi-widget-wordpress-dynamic.html`)
+
+Localize o bloco `CONFIG` no inicio do `<script>` e altere os dois valores:
+
+```js
+var CONFIG = {
+  urlSistema: 'SUA_URL_AQUI',
+  urlApi:     'SUA_URL_AQUI/api/projects/recommended',
+}
+```
+
+Substitua `SUA_URL_AQUI` pela URL base do sistema, sem barra no final. Exemplo:
+
+```js
+var CONFIG = {
+  urlSistema: 'https://pi.fatecitaquera.edu.br',
+  urlApi:     'https://pi.fatecitaquera.edu.br/api/projects/recommended',
+}
+```
+
+- `urlSistema` e usado no link "ver todos" e na mensagem de manutencao exibida quando a API esta indisponivel.
+- `urlApi` e o endpoint que retorna os projetos em destaque em formato JSON.
+
+### Versao estatica (`pi-widget-wordpress-static.html`)
+
+Localize o bloco `CONFIG` no inicio do `<script>` e altere o valor:
+
+```js
+var CONFIG = {
+  urlSistema: 'SUA_URL_AQUI',
+}
+```
+
+Substitua `SUA_URL_AQUI` pela URL base do sistema. Exemplo:
+
+```js
+var CONFIG = {
+  urlSistema: 'https://pi.fatecitaquera.edu.br',
+}
+```
+
+- `urlSistema` e usado no link "ver todos" e para compor a URL de cada card no formato `urlSistema/projetos/{id}`.
+
 ## Como usar no WordPress
 
 1. Acesse o editor da pagina no painel WordPress (editor Gutenberg)
@@ -26,15 +73,9 @@ Nenhum plugin adicional e necessario.
 
 ## Versao dinamica (recomendada)
 
-O arquivo `pi-widget-wordpress-dynamic.html` busca os dados do endpoint publico do sistema:
+O arquivo `pi-widget-wordpress-dynamic.html` busca os dados do endpoint publico do sistema. O endpoint deve retornar os projetos premiados com CORS aberto para que o widget funcione a partir de qualquer dominio. Enquanto os dados carregam, um indicador de carregamento e exibido. Se a API estiver indisponivel, o widget exibe uma mensagem de manutencao com link para o sistema.
 
-```
-GET https://projetos.alvarosena.com.br/api/projects/recommended
-```
-
-O endpoint retorna os projetos premiados com CORS aberto, entao o widget funciona a partir de qualquer dominio. Enquanto os dados carregam, um indicador de carregamento e exibido. Se a API estiver indisponivel, o widget usa automaticamente os dados estaticos de fallback embutidos no codigo.
-
-Para que a versao dinamica reflita novos projetos premiados sem precisar editar o WordPress, basta que o sistema `projetos.alvarosena.com.br` esteja atualizado. A API e mantida no repositorio [pi-repository](https://github.com/ESTAGIO-DSM20262/pi-repository).
+Para que a versao dinamica reflita novos projetos premiados sem precisar editar o WordPress, basta que o sistema esteja atualizado. A API e mantida no repositorio [pi-repository](https://github.com/ESTAGIO-DSM20262/pi-repository).
 
 ## Versao estatica (fallback)
 
