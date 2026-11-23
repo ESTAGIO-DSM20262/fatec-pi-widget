@@ -1,19 +1,8 @@
-<!-- ================================================================
-   PI INDICADOS — Widget DINÂMICO para WordPress (Custom HTML Block)
-   Design: Fatec Itaquera (Tema CPS v2.0.08)
-   Dados:  GET https://projetos.alvarosena.com.br/api/projects/recommended
-   
-   Versão com fetch da API — atualiza automaticamente quando novos
-   projetos são premiados no sistema. Fallback para dados estáticos
-   caso a API esteja indisponível.
-================================================================ -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&family=Roboto+Slab:wght@400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ── Layout geral ────────────────────────────────────────────── */
 .pi-secao {
   font-family: 'Roboto', Arial, sans-serif;
   font-weight: 300;
@@ -22,8 +11,6 @@
   margin: 50px 0;
   line-height: 1.6;
 }
-
-/* ── Cabeçalho (replica .cabecalho-secao da Fatec) ──────────── */
 .pi-cabecalho-topo {
   display: flex;
   justify-content: space-between;
@@ -50,8 +37,6 @@
   transition: color 0.2s;
 }
 .pi-ver-todos:hover { color: #7e0000; text-decoration: underline; }
-
-/* Divisor SVG (replica divisor.svg da Fatec) */
 .pi-divisor {
   display: block;
   height: 15px;
@@ -61,8 +46,6 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
-
-/* ── Estado de carregamento ─────────────────────────────────── */
 .pi-loading {
   display: flex;
   align-items: center;
@@ -81,8 +64,17 @@
   flex-shrink: 0;
 }
 @keyframes pi-spin { to { transform: rotate(360deg); } }
-
-/* ── Grid ────────────────────────────────────────────────────── */
+.pi-manutencao-msg {
+  font-size: 14px;
+  color: #666;
+  padding: 24px 0;
+  margin: 0;
+}
+.pi-manutencao-msg a {
+  color: #b20000;
+  text-decoration: none;
+}
+.pi-manutencao-msg a:hover { text-decoration: underline; }
 .pi-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -93,8 +85,6 @@
   .pi-grid { grid-template-columns: 1fr; }
   .pi-cabecalho-topo h2 { font-size: 22px; }
 }
-
-/* ── Card ────────────────────────────────────────────────────── */
 .pi-card {
   background: #fff;
   border: 1px solid #e4e4e4;
@@ -107,8 +97,6 @@
   box-shadow: 0 8px 24px rgba(0,0,0,.12);
   transform: translateY(-3px);
 }
-
-/* Banner colorido */
 .pi-card-topo {
   position: relative;
   height: 150px;
@@ -121,16 +109,21 @@
   transition: filter 0.35s;
 }
 .pi-card:hover .pi-card-topo { filter: contrast(1.05) saturate(1.15); }
-
-.pi-card-icone { font-size: 38px; line-height: 1; margin-bottom: 6px; }
+.pi-card-abbrev {
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: rgba(0,0,0,.22);
+  line-height: 1;
+  margin-bottom: 6px;
+  letter-spacing: 0.06em;
+}
 .pi-card-categoria-label {
   font-size: 11px;
   font-weight: 400;
-  color: rgba(0,0,0,.55);
+  color: rgba(0,0,0,.5);
   text-align: center;
 }
-
-/* Badges sobrepostos */
 .pi-badge {
   position: absolute;
   font-size: 10px;
@@ -143,13 +136,7 @@
 .pi-badge-status    { top: 8px; right: 8px; }
 .pi-status-andamento { background: rgba(0,193,207,.18); color: #004854; }
 .pi-status-concluido { background: rgba(0,92,109,.14);  color: #004854; }
-.pi-badge-semestre  {
-  bottom: 8px; left: 8px;
-  background: rgba(255,255,255,.82);
-  color: #333; font-weight: 400;
-}
-
-/* Corpo */
+.pi-badge-semestre  { bottom: 8px; left: 8px; background: rgba(255,255,255,.82); color: #333; font-weight: 400; }
 .pi-card-corpo { padding: 16px; display: flex; flex-direction: column; flex: 1; }
 .pi-card-meta {
   display: flex; justify-content: space-between; align-items: center;
@@ -182,10 +169,7 @@
   border: 1px solid rgba(0,92,109,.15);
   padding: 2px 8px; border-radius: 20px;
 }
-.pi-card-footer {
-  border-top: 1px solid #f0f0f0;
-  padding-top: 12px; margin-top: auto;
-}
+.pi-card-footer { border-top: 1px solid #f0f0f0; padding-top: 12px; margin-top: auto; }
 .pi-link-ver {
   font-size: 13px; font-weight: 400; color: #b20000;
   text-decoration: none; transition: color 0.2s;
@@ -200,10 +184,9 @@
   </div>
   <span class="pi-divisor"></span>
 
-  <!-- Estado inicial: carregando -->
   <div class="pi-loading" id="pi-loading">
     <div class="pi-spinner"></div>
-    <span>Carregando projetos em destaque…</span>
+    <span>Carregando projetos...</span>
   </div>
 
   <div class="pi-grid" id="pi-projetos-grid" style="display:none"></div>
@@ -211,32 +194,33 @@
 
 <script>
 (function () {
-  /* ── URL da API ────────────────────────────────────────────── */
   var API_URL = 'https://projetos.alvarosena.com.br/api/projects/recommended'
 
-  /* ── Mapeamento de tema → ícone + cor de fundo ─────────────── */
   var TEMA_MAP = {
-    'gestão de laboratórios':    { icone: '🧪', cor: '#dbeafe' },
-    'mentoria':                  { icone: '🤝', cor: '#f3e8ff' },
-    'networking':                { icone: '🤝', cor: '#f3e8ff' },
-    'segurança':                 { icone: '🔒', cor: '#fee2e2' },
-    'segurança da informação':   { icone: '🔒', cor: '#fee2e2' },
-    'telemetria':                { icone: '📡', cor: '#ccfbf1' },
-    'smartcampus':               { icone: '📡', cor: '#ccfbf1' },
-    'rendimento':                { icone: '📊', cor: '#ffedd5' },
-    'edutrack':                  { icone: '📊', cor: '#ffedd5' },
-    'saúde':                     { icone: '🏥', cor: '#dcfce7' },
-    'acervo':                    { icone: '📚', cor: '#f1f5f9' },
-    'biblioteca':                { icone: '📚', cor: '#f1f5f9' },
-    'energia':                   { icone: '⚡', cor: '#fef9c3' },
-    'sustentabilidade':          { icone: '🌱', cor: '#d1fae5' },
-    'automação':                 { icone: '⚙️', cor: '#fef3c7' },
-    'serverless':                { icone: '☁️', cor: '#e0f2fe' },
-    'logística':                 { icone: '🚚', cor: '#fdf4ff' },
-    'gestão':                    { icone: '📋', cor: '#f0fdf4' },
+    'gestao de laboratorios':  { abbrev: 'LAB', cor: '#dbeafe' },
+    'gestão de laboratórios':  { abbrev: 'LAB', cor: '#dbeafe' },
+    'mentoria':                { abbrev: 'MNT', cor: '#f3e8ff' },
+    'networking':              { abbrev: 'MNT', cor: '#f3e8ff' },
+    'seguranca':               { abbrev: 'SEG', cor: '#fee2e2' },
+    'segurança':               { abbrev: 'SEG', cor: '#fee2e2' },
+    'telemetria':              { abbrev: 'TEL', cor: '#ccfbf1' },
+    'rendimento':              { abbrev: 'RND', cor: '#ffedd5' },
+    'saude':                   { abbrev: 'SAU', cor: '#dcfce7' },
+    'saúde':                   { abbrev: 'SAU', cor: '#dcfce7' },
+    'acervo':                  { abbrev: 'ACV', cor: '#f1f5f9' },
+    'biblioteca':              { abbrev: 'ACV', cor: '#f1f5f9' },
+    'energia':                 { abbrev: 'ECO', cor: '#fef9c3' },
+    'sustentabilidade':        { abbrev: 'SUS', cor: '#d1fae5' },
+    'automacao':               { abbrev: 'AUT', cor: '#fef3c7' },
+    'automação':               { abbrev: 'AUT', cor: '#fef3c7' },
+    'serverless':              { abbrev: 'SRV', cor: '#e0f2fe' },
+    'logistica':               { abbrev: 'LOG', cor: '#fdf4ff' },
+    'logística':               { abbrev: 'LOG', cor: '#fdf4ff' },
+    'gestao':                  { abbrev: 'GST', cor: '#f0fdf4' },
+    'gestão':                  { abbrev: 'GST', cor: '#f0fdf4' },
   }
 
-  var DEFAULT_TEMA = { icone: '💡', cor: '#f5f5f5' }
+  var DEFAULT_TEMA = { abbrev: 'PI', cor: '#f5f5f5' }
 
   function getTemaConfig(theme) {
     if (!theme) return DEFAULT_TEMA
@@ -247,12 +231,10 @@
     return DEFAULT_TEMA
   }
 
-  /* ── Mapeia status do banco para texto de exibição ─────────── */
   function mapStatus(status) {
-    return status === 'publicado' ? 'Concluído' : 'Em andamento'
+    return status === 'publicado' ? 'Concluido' : 'Em andamento'
   }
 
-  /* ── Mapeia resposta da API para formato do card ───────────── */
   function apiToCard(p) {
     var tema  = getTemaConfig(p.theme)
     var techs = [].concat(p.languages || [], p.stack || [])
@@ -261,10 +243,10 @@
       titulo:      p.title,
       descricao:   p.summary,
       ciclo:       p.cycle,
-      dsmSem:      'DSM ' + p.semester + 'º Semestre',
+      dsmSem:      'DSM ' + p.semester + 'o Semestre',
       status:      mapStatus(p.status),
       categoria:   p.theme || '',
-      icone:       tema.icone,
+      abbrev:      tema.abbrev,
       cor:         tema.cor,
       techs:       techs,
       orientador:  p.advisorName || '',
@@ -272,7 +254,14 @@
     }
   }
 
-  /* ── Renderiza um card ──────────────────────────────────────── */
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+  }
+
   function renderCard(p) {
     var stCls = p.status === 'Em andamento' ? 'pi-status-andamento' : 'pi-status-concluido'
     var tags  = p.techs.slice(0, 5).map(function (t) {
@@ -281,9 +270,9 @@
     return (
       '<article class="pi-card">' +
         '<div class="pi-card-topo" style="background:' + p.cor + '">' +
-          '<span class="pi-badge pi-badge-indicado">⭐ PI Indicado</span>' +
+          '<span class="pi-badge pi-badge-indicado">PI Indicado</span>' +
           '<span class="pi-badge pi-badge-status ' + stCls + '">' + esc(p.status) + '</span>' +
-          '<div class="pi-card-icone">' + p.icone + '</div>' +
+          '<div class="pi-card-abbrev">' + esc(p.abbrev) + '</div>' +
           '<div class="pi-card-categoria-label">' + esc(p.categoria) + '</div>' +
           '<span class="pi-badge pi-badge-semestre">' + esc(p.dsmSem) + '</span>' +
         '</div>' +
@@ -296,23 +285,13 @@
           '<p class="pi-card-desc">' + esc(p.descricao) + '</p>' +
           '<ul class="pi-tags">' + tags + '</ul>' +
           '<div class="pi-card-footer">' +
-            '<a href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer" class="pi-link-ver">Ver projeto →</a>' +
+            '<a href="' + esc(p.url) + '" target="_blank" rel="noopener noreferrer" class="pi-link-ver">Ver projeto</a>' +
           '</div>' +
         '</div>' +
       '</article>'
     )
   }
 
-  /* Escapa HTML para evitar XSS nos dados da API */
-  function esc(str) {
-    return String(str || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-  }
-
-  /* ── Injeta os cards no DOM ─────────────────────────────────── */
   function renderGrid(projetos) {
     var grid    = document.getElementById('pi-projetos-grid')
     var loading = document.getElementById('pi-loading')
@@ -322,33 +301,23 @@
     grid.style.display = ''
   }
 
-  /* ── Dados de fallback (estáticos) ──────────────────────────── */
-  /* Usados quando a API estiver indisponível ou com erro.         */
-  /* Mantém o widget funcionando mesmo sem conexão com o servidor. */
-  var FALLBACK = [
-    { id:'4',  titulo:'ConectaFatec — Mentoria & Networking',           descricao:'Rede de mentoria e networking entre alunos e ex-alunos da Fatec.', ciclo:'2026/2', dsmSem:'DSM 5º Semestre', status:'Em andamento', categoria:'Mentoria & Networking',  icone:'🤝', cor:'#f3e8ff', techs:['React','Node.js'],     orientador:'Prof. Marcos V.',           url:'https://projetos.alvarosena.com.br/projetos/4'  },
-    { id:'1',  titulo:'SALA — Sistema de Agendamento de Laboratórios',  descricao:'Plataforma de agendamento de laboratórios acadêmicos em tempo real.',  ciclo:'2026/1', dsmSem:'DSM 6º Semestre', status:'Em andamento', categoria:'Gestão de laboratórios', icone:'🧪', cor:'#dbeafe', techs:['React','Node.js'],     orientador:'Prof. Dr. Carlos Oliveira', url:'https://projetos.alvarosena.com.br/projetos/1'  },
-    { id:'8',  titulo:'SegurApp — Gestão de Acessos',                   descricao:'Gestão de acessos físicos e digitais com controle biométrico.',         ciclo:'2026/1', dsmSem:'DSM 4º Semestre', status:'Em andamento', categoria:'Segurança',             icone:'🔒', cor:'#fee2e2', techs:['Java','Spring Boot'],  orientador:'Prof. Dr. Carlos Oliveira', url:'https://projetos.alvarosena.com.br/projetos/8'  },
-    { id:'3',  titulo:'SmartCampus — Telemetria de Ambientes',          descricao:'IoT para monitoramento ambiental do campus em tempo real.',              ciclo:'2026/1', dsmSem:'DSM 4º Semestre', status:'Em andamento', categoria:'Telemetria',            icone:'📡', cor:'#ccfbf1', techs:['Python','IoT'],       orientador:'Prof. Marcos V.',           url:'https://projetos.alvarosena.com.br/projetos/3'  },
-    { id:'6',  titulo:'EduTrack — Rendimento em Programação',           descricao:'Dashboard de rendimento acadêmico com métricas individuais e por turma.', ciclo:'2025/2', dsmSem:'DSM 3º Semestre', status:'Concluído',    categoria:'Análise de rendimento', icone:'📊', cor:'#ffedd5', techs:['React','Python'],     orientador:'Profa. Ana L.',             url:'https://projetos.alvarosena.com.br/projetos/6'  },
-    { id:'9',  titulo:'SaúdeConecta — Triagem Acessível',               descricao:'Triagem de saúde acessível com formulários adaptativos e multilíngue.',   ciclo:'2025/2', dsmSem:'DSM 2º Semestre', status:'Concluído',    categoria:'Saúde & acessibilidade', icone:'🏥', cor:'#dcfce7', techs:['Vue.js','Flask'],    orientador:'Profa. Ana L.',             url:'https://projetos.alvarosena.com.br/projetos/9'  },
-    { id:'12', titulo:'Biblioteca Digital — Acervo de TCCs',            descricao:'Repositório digital de TCCs com busca semântica e curadoria docente.',    ciclo:'2025/2', dsmSem:'DSM 6º Semestre', status:'Concluído',    categoria:'Acervo digital',        icone:'📚', cor:'#f1f5f9', techs:['Next.js','TypeScript'], orientador:'Profa. Ana L.',             url:'https://projetos.alvarosena.com.br/projetos/12' },
-    { id:'10', titulo:'EcoMonitor — Consumo de Energia',                descricao:'Monitor de consumo energético predial com alertas e metas de sustentabilidade.', ciclo:'2025/1', dsmSem:'DSM 3º Semestre', status:'Concluído', categoria:'Eficiência energética', icone:'⚡', cor:'#fef9c3', techs:['Python','IoT'],  orientador:'Prof. Marcos V.',           url:'https://projetos.alvarosena.com.br/projetos/10' },
-  ]
+  function showMaintenance() {
+    var loading = document.getElementById('pi-loading')
+    if (!loading) return
+    loading.innerHTML = '<p class="pi-manutencao-msg">Os projetos estao temporariamente indisponiveis. Acesse diretamente em <a href="https://projetos.alvarosena.com.br/" target="_blank" rel="noopener noreferrer">projetos.alvarosena.com.br</a>.</p>'
+  }
 
-  /* ── Busca da API com fallback ──────────────────────────────── */
   fetch(API_URL)
     .then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status)
       return res.json()
     })
     .then(function (data) {
-      if (!Array.isArray(data) || data.length === 0) throw new Error('Sem dados')
+      if (!Array.isArray(data) || data.length === 0) throw new Error('sem dados')
       renderGrid(data.map(apiToCard))
     })
-    .catch(function (err) {
-      console.warn('[PI Widget] API indisponível, usando fallback estático.', err)
-      renderGrid(FALLBACK)
+    .catch(function () {
+      showMaintenance()
     })
 }())
 </script>
