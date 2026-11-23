@@ -56,7 +56,7 @@ Substitua `SUA_URL_AQUI` pela URL base do sistema. Exemplo:
 
 ```js
 var CONFIG = {
-  urlSistema: 'https://pi.fatecitaquera.edu.br',
+  urlSistema: 'https://fatecitaquera.cps.sp.gov.br/',
 }
 ```
 
