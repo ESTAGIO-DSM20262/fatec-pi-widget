@@ -180,7 +180,7 @@
 <section class="pi-secao">
   <div class="pi-cabecalho-topo">
     <h2>Projetos Integradores em Destaque</h2>
-    <a href="https://projetos.alvarosena.com.br/" target="_blank" rel="noopener noreferrer" class="pi-ver-todos">+ ver todos</a>
+    <a id="pi-link-ver-todos" href="#" target="_blank" rel="noopener noreferrer" class="pi-ver-todos">+ ver todos</a>
   </div>
   <span class="pi-divisor"></span>
 
@@ -194,7 +194,25 @@
 
 <script>
 (function () {
-  var API_URL = 'https://projetos.alvarosena.com.br/api/projects/recommended'
+
+  // -----------------------------------------------------------------
+  // Configuracao — altere os valores abaixo para adaptar o widget.
+  //
+  // urlSistema : endereco base do sistema de projetos.
+  //              Usado no link "ver todos" e na mensagem de manutencao.
+  //
+  // urlApi     : endpoint que retorna os projetos em destaque.
+  //              Deve responder com um array JSON no formato esperado.
+  //              Consulte o README para detalhes do contrato da API.
+  // -----------------------------------------------------------------
+  var CONFIG = {
+    urlSistema: 'https://projetos.alvarosena.com.br',
+    urlApi:     'https://projetos.alvarosena.com.br/api/projects/recommended',
+  }
+  // -----------------------------------------------------------------
+
+  var linkVerTodos = document.getElementById('pi-link-ver-todos')
+  if (linkVerTodos) linkVerTodos.href = CONFIG.urlSistema
 
   var TEMA_MAP = {
     'gestao de laboratorios':  { abbrev: 'LAB', cor: '#dbeafe' },
@@ -239,18 +257,18 @@
     var tema  = getTemaConfig(p.theme)
     var techs = [].concat(p.languages || [], p.stack || [])
     return {
-      id:          p.id,
-      titulo:      p.title,
-      descricao:   p.summary,
-      ciclo:       p.cycle,
-      dsmSem:      'DSM ' + p.semester + 'o Semestre',
-      status:      mapStatus(p.status),
-      categoria:   p.theme || '',
-      abbrev:      tema.abbrev,
-      cor:         tema.cor,
-      techs:       techs,
-      orientador:  p.advisorName || '',
-      url:         p.projectUrl || ('https://projetos.alvarosena.com.br/projetos/' + p.id),
+      id:         p.id,
+      titulo:     p.title,
+      descricao:  p.summary,
+      ciclo:      p.cycle,
+      dsmSem:     'DSM ' + p.semester + 'o Semestre',
+      status:     mapStatus(p.status),
+      categoria:  p.theme || '',
+      abbrev:     tema.abbrev,
+      cor:        tema.cor,
+      techs:      techs,
+      orientador: p.advisorName || '',
+      url:        p.projectUrl || (CONFIG.urlSistema + '/projetos/' + p.id),
     }
   }
 
@@ -304,10 +322,10 @@
   function showMaintenance() {
     var loading = document.getElementById('pi-loading')
     if (!loading) return
-    loading.innerHTML = '<p class="pi-manutencao-msg">Os projetos estao temporariamente indisponiveis. Acesse diretamente em <a href="https://projetos.alvarosena.com.br/" target="_blank" rel="noopener noreferrer">projetos.alvarosena.com.br</a>.</p>'
+    loading.innerHTML = '<p class="pi-manutencao-msg">Os projetos estao temporariamente indisponiveis. Acesse diretamente em <a href="' + esc(CONFIG.urlSistema) + '" target="_blank" rel="noopener noreferrer">' + esc(CONFIG.urlSistema.replace(/^https?:\/\//, '')) + '</a>.</p>'
   }
 
-  fetch(API_URL)
+  fetch(CONFIG.urlApi)
     .then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status)
       return res.json()
