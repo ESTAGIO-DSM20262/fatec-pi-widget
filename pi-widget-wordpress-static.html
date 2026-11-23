@@ -160,21 +160,9 @@
 <script>
 (function () {
 
-  // -----------------------------------------------------------------
-  // Configuracao — altere os valores abaixo para adaptar o widget.
-  //
-  // urlSistema : endereco base do sistema de projetos.
-  //              Usado no link "ver todos" e nas URLs de cada projeto.
-  //
-  // Os dados dos projetos estao no array abaixo. Para adicionar ou
-  // remover um projeto, edite diretamente o array. Para atualizar
-  // a URL de cada projeto, basta alterar urlSistema — as URLs sao
-  // compostas automaticamente como urlSistema + '/projetos/' + id.
-  // -----------------------------------------------------------------
   var CONFIG = {
-    urlSistema: 'https://projetos.alvarosena.com.br',
+    urlSistema: 'SUA_URL_AQUI',
   }
-  // -----------------------------------------------------------------
 
   var linkVerTodos = document.getElementById('pi-link-ver-todos')
   if (linkVerTodos) linkVerTodos.href = CONFIG.urlSistema
