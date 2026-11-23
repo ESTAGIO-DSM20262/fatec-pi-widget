@@ -34,8 +34,8 @@ Substitua `SUA_URL_AQUI` pela URL base do sistema, sem barra no final. Exemplo:
 
 ```js
 var CONFIG = {
-  urlSistema: 'https://pi.fatecitaquera.edu.br',
-  urlApi:     'https://pi.fatecitaquera.edu.br/api/projects/recommended',
+  urlSistema: 'https://fatecitaquera.cps.sp.gov.br/',
+  urlApi:     'https://fatecitaquera.cps.sp.gov.br/api/projects/recommended',
 }
 ```
 
